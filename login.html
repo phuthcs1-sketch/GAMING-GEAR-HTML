@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"><title>Đăng Nhập – GearNexus</title>
+  <link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/components.css">
+  <style>
+    .auth-box { background: var(--bg-secondary); padding: 30px; border-radius: 8px; width: 400px; margin: 80px auto; border: 1px solid var(--border-color); }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 5px; color: var(--text-bright); }
+    .form-group input { width: 100%; padding: 10px; background: var(--bg-primary); border: 1px solid var(--border-color); color: white; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <header id="main-header"></header>
+  <main class="container">
+    <div class="auth-box">
+      <h2 style="color:var(--text-bright); margin-bottom:20px;" class="text-center">ĐĂNG NHẬP</h2>
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="login-email" required>
+        </div>
+        <div class="form-group">
+          <label>Mật khẩu</label>
+          <input type="password" id="login-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Đăng Nhập</button>
+      </form>
+      <p style="margin-top:20px;" class="text-center">Chưa có tài khoản? <a href="register.html" style="color:var(--color-accent)">Đăng ký ngay</a></p>
+      <div style="margin-top:15px; padding:10px; background:rgba(69,243,255,0.1); border-radius:4px; font-size:13px;" class="text-center">
+        💡 Tài khoản test: <strong>demo@gearnexus.com</strong> / <strong>demo123</strong>
+      </div>
+    </div>
+  </main>
+  <footer id="main-footer"></footer>
+  <script src="js/config.js"></script><script src="js/data.js"></script><script src="js/auth.js"></script><script src="js/cart.js"></script><script src="js/main.js"></script>
+  <script>
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById("login-email").value;
+      const pass = document.getElementById("login-password").value;
+      const res = Auth.login(email, pass);
+      if(res.success) {
+        window.location.href = "index.html";
+      } else {
+        Main.showToast(res.msg, "error");
+      }
+    }
+  </script>
+</body>
+</html>
