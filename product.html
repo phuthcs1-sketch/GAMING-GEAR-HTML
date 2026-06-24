@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Chi tiết sản phẩm – Hệ sinh thái Gaming Gear cao cấp GearNexus.">
+  <title>Chi tiết sản phẩm – GearNexus</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .product-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .gallery-main {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--bg);
+      border: 1px solid var(--border);
+    }
+
+    .gallery-main img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: opacity 0.25s ease;
+    }
+
+    .gallery-thumbs {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .gallery-thumb {
+      width: 72px; height: 72px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .gallery-thumb.active { border-color: var(--primary); }
+    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    .product-category { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--primary); margin-bottom: 8px; }
+    .product-title { font-size: 1.7rem; font-weight: 700; margin-bottom: 12px; }
+
+    .product-rating-row {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+    }
+
+    .product-price-row {
+      display: flex; align-items: baseline; gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .product-price-main { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+    .product-price-orig { font-size: 0.95rem; text-decoration: line-through; color: var(--text-light); }
+    .product-save {
+      font-size: 0.8rem; font-weight: 700;
+      background: #FEE2E2; color: var(--red);
+      padding: 2px 8px; border-radius: var(--radius-full);
+    }
+
+    .product-meta { display: flex; gap: 8px; margin-bottom: 16px; }
+    .product-desc { font-size: 0.92rem; line-height: 1.75; margin-bottom: 20px; color: var(--text-muted); }
+
+    .product-stock {
+      font-size: 0.82rem;
+      padding: 7px 12px;
+      border-radius: var(--radius);
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-bottom: 20px;
+      background: #DCFCE7; color: var(--green);
+    }
+
+    .product-stock.low { background: #FFEDD5; color: var(--orange); }
+
+    .add-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .add-row .btn { flex: 1; }
+
+    .product-info-list { display: flex; flex-direction: column; gap: 8px; }
+    .product-info-item { display: flex; align-items: flex-start; gap: 8px; font-size: 0.85rem; color: var(--text-muted); }
+
+    @media (max-width: 768px) {
+      .product-layout { grid-template-columns: 1fr; gap: 28px; }
+      .product-title { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/images/logo.png" alt="GearNexus" class="nav-logo-img"> GearNexus
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Trang chủ</a>
+      <a href="shop.html">Cửa hàng</a>
+      <a href="about.html">Giới thiệu</a>
+    </div>
+    <div class="nav-actions">
+      <div id="auth-nav" style="display:flex;align-items:center;gap:8px"></div>
+      <a href="cart.html" class="nav-cart-btn" aria-label="Giỏ hàng">
+        🛒 Giỏ hàng<span class="cart-badge" id="cart-badge">0</span>
+      </a>
+      <button class="nav-menu-btn" id="menu-btn" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-drawer-overlay" id="drawer-overlay"></div>
+<div class="nav-drawer" id="nav-drawer">
+  <a href="index.html">🏠 Trang chủ</a>
+  <a href="shop.html">🛍️ Cửa hàng</a>
+  <a href="about.html">ℹ️ Giới thiệu</a>
+  <a href="cart.html">🛒 Giỏ hàng</a>
+</div>
+
+<div style="padding-top:var(--nav-height)">
+  <section class="section" id="product-section">
+    <div class="container" id="product-container">
+      <div class="empty-state">
+        <div class="empty-state-icon">⚡</div>
+        <h3>Đang kết nối cơ sở dữ liệu gear...</h3>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 64px;display:none" id="related-section">
+    <div class="container">
+      <div class="divider" style="margin-bottom:40px"></div>
+      <div class="section-header" style="margin-bottom:28px">
+        <h2>Trang Bị Bổ Sung Phù Hợp</h2>
+      </div>
+      <div class="products-grid" id="related-grid" style="grid-template-columns:repeat(4,1fr)"></div>
+    </div>
+  </section>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2026 GearNexus. Bảo lưu mọi quyền.</span>
+      <a href="shop.html" style="color:var(--primary)">← Quay lại Kho vũ khí</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script src="js/product.js"></script>
+</body>
+</html>

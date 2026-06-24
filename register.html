@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Khởi tạo tài khoản GearNexus mới – Gia nhập liên minh Gaming Gear cao cấp.">
+  <title>Đăng ký – GearNexus</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+    }
+
+    .auth-page {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .auth-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: var(--shadow);
+    }
+
+    .auth-logo {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .auth-logo a {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .auth-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .auth-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .form-group { margin-bottom: 16px; }
+
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: var(--font);
+      transition: var(--transition);
+    }
+
+    .form-input:focus {
+      border-color: var(--primary);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+      outline: none;
+    }
+
+    .form-input.error { border-color: var(--red); }
+    .form-input::placeholder { color: var(--text-light); }
+
+    .form-error {
+      font-size: 0.78rem;
+      color: var(--red);
+      margin-top: 4px;
+      display: none;
+    }
+
+    .form-error.visible { display: block; }
+
+    /* Thanh đánh giá độ mạnh mật khẩu */
+    .password-strength {
+      margin-top: 6px;
+      display: none;
+    }
+
+    .password-strength.visible { display: block; }
+
+    .strength-bar {
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+
+    .strength-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.3s ease, background 0.3s ease;
+      width: 0%;
+    }
+
+    .strength-text { font-size: 0.75rem; }
+
+    .form-terms {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      cursor: pointer;
+    }
+
+    .form-terms input { accent-color: var(--primary); margin-top: 2px; flex-shrink: 0; }
+
+    .form-link {
+      font-size: 0.85rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .form-link:hover { text-decoration: underline; }
+
+    .btn-submit { width: 100%; padding: 12px; font-size: 0.95rem; }
+
+    .alert {
+      padding: 12px 14px;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      margin-bottom: 18px;
+      display: none;
+    }
+
+    .alert.visible { display: block; }
+    .alert-error   { background: #FEE2E2; color: var(--red);   border: 1px solid #FECACA; }
+    .alert-success { background: #DCFCE7; color: var(--green); border: 1px solid #BBF7D0; }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .auth-topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .auth-topbar a { font-size: 0.88rem; color: var(--text-muted); }
+    .auth-topbar a:hover { color: var(--primary); }
+
+    /* Hàng nhập họ tên */
+    .name-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 400px) { .name-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<div class="auth-topbar">
+  <a href="index.html"><img src="assets/images/logo.png" alt="GearNexus" class="nav-logo-img"> <strong style="color:var(--primary)">GearNexus</strong></a>
+  <a href="index.html">← Quay lại Trang chủ</a>
+</div>
+
+<div class="auth-page">
+  <div class="auth-card anim-fade-up">
+
+    <div class="auth-logo">
+      <a href="index.html"><img src="assets/images/logo.png" alt="GearNexus" class="nav-logo-img"> GearNexus</a>
+    </div>
+
+    <h1 class="auth-title">Khởi tạo tài khoản</h1>
+    <p class="auth-subtitle">Gia nhập GearNexus để thiết lập cấu hình vũ khí tối tân</p>
+
+    <div class="alert alert-error" id="register-error"></div>
+    <div class="alert alert-success" id="register-success">
+      ✅ Đăng ký thành công! Đang kết nối tới cổng đăng nhập…
+    </div>
+
+    <form id="register-form" novalidate>
+
+      <div class="name-row">
+        <div class="form-group">
+          <label class="form-label" for="first-name">Tên</label>
+          <input class="form-input" type="text" id="first-name" placeholder="Minh" required>
+          <div class="form-error" id="first-name-error">Vui lòng điền thông tin.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="last-name">Họ</label>
+          <input class="form-input" type="text" id="last-name" placeholder="Nguyễn" required>
+          <div class="form-error" id="last-name-error">Vui lòng điền thông tin.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Địa chỉ Email</label>
+        <input class="form-input" type="email" id="email" placeholder="ten_chien_binh@gearnexus.com" autocomplete="email" required>
+        <div class="form-error" id="email-error">Vui lòng nhập một địa chỉ email hợp lệ.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="phone">Số điện thoại <span style="color:var(--text-light);font-weight:400">(không bắt buộc)</span></label>
+        <input class="form-input" type="tel" id="phone" placeholder="09x xxx xxxx">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Mật khẩu mã hóa</label>
+        <input class="form-input" type="password" id="password" placeholder="Tối thiểu 6 ký tự" autocomplete="new-password" required>
+        <div class="password-strength" id="strength-wrap">
+          <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+          <span class="strength-text" id="strength-text"></span>
+        </div>
+        <div class="form-error" id="password-error">Mật khẩu phải chứa ít nhất 6 ký tự.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="confirm-password">Xác nhận mật khẩu</label>
+        <input class="form-input" type="password" id="confirm-password" placeholder="Nhập lại mật khẩu bảo mật" autocomplete="new-password" required>
+        <div class="form-error" id="confirm-error">Mật khẩu xác nhận không trùng khớp.</div>
+      </div>
+
+      <label class="form-terms" id="terms-label">
+        <input type="checkbox" id="terms">
+        Tôi đồng ý với <a href="#" class="form-link" onclick="return false">Điều khoản dịch vụ</a> và <a href="#" class="form-link" onclick="return false">Chính sách bảo mật</a> của GearNexus.
+      </label>
+      <div class="form-error" id="terms-error" style="margin-top:-10px;margin-bottom:14px">Bạn phải đồng ý với các điều khoản để tiếp tục.</div>
+
+      <button type="submit" class="btn btn-primary btn-submit" id="register-btn">
+        Kích hoạt tài khoản
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      Bạn đã có tài khoản chiến binh? <a href="login.html" class="form-link">Đăng nhập ngay</a>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  if (isLoggedIn()) window.location.href = 'index.html';
+
+  const form = document.getElementById('register-form');
+
+  // ---- Đánh giá độ mạnh mật khẩu ----
+  const passwordInput = document.getElementById('password');
+  const strengthWrap  = document.getElementById('strength-wrap');
+  const strengthFill  = document.getElementById('strength-fill');
+  const strengthText  = document.getElementById('strength-text');
+
+  passwordInput.addEventListener('input', () => {
+    const val = passwordInput.value;
+    if (!val) { strengthWrap.classList.remove('visible'); return; }
+    strengthWrap.classList.add('visible');
+
+    let score = 0;
+    if (val.length >= 6)  score++;
+    if (val.length >= 10) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+
+    const levels = [
+      { label: 'Rất yếu',  color: '#DC2626', width: '20%' },
+      { label: 'Yếu',      color: '#EA580C', width: '40%' },
+      { label: 'Trung bình', color: '#D97706', width: '60%' },
+      { label: 'Tốt',      color: '#16A34A', width: '80%' },
+      { label: 'Rất mạnh',  color: '#15803D', width: '100%' },
+    ];
+    const lvl = levels[Math.min(score - 1, 4)] || levels[0];
+    strengthFill.style.width = lvl.width;
+    strengthFill.style.background = lvl.color;
+    strengthText.textContent = lvl.label;
+    strengthText.style.color = lvl.color;
+  });
+
+  // ---- Trợ giúp xử lý form ----
+  function showError(id, inputId) {
+    document.getElementById(id).classList.add('visible');
+    if (inputId) document.getElementById(inputId).classList.add('error');
+  }
+
+  function clearErrors() {
+    document.querySelectorAll('.form-error').forEach(el => el.classList.remove('visible'));
+    document.querySelectorAll('.form-input').forEach(el => el.classList.remove('error'));
+    document.getElementById('register-error').classList.remove('visible');
+    document.getElementById('register-success').classList.remove('visible');
+  }
+
+  function isValidEmail(val) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+  }
+
+  // ---- Xử lý gửi biểu mẫu ----
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    clearErrors();
+
+    const firstName = document.getElementById('first-name').value.trim();
+    const lastName  = document.getElementById('last-name').value.trim();
+    const email     = document.getElementById('email').value.trim();
+    const password  = document.getElementById('password').value;
+    const confirm   = document.getElementById('confirm-password').value;
+    const terms     = document.getElementById('terms').checked;
+
+    let valid = true;
+
+    if (!firstName) { showError('first-name-error', 'first-name'); valid = false; }
+    if (!lastName)  { showError('last-name-error',  'last-name');  valid = false; }
+    if (!isValidEmail(email)) { showError('email-error', 'email'); valid = false; }
+    if (password.length < 6) { showError('password-error', 'password'); valid = false; }
+    if (password !== confirm) { showError('confirm-error', 'confirm-password'); valid = false; }
+    if (!terms) { showError('terms-error', null); valid = false; }
+
+    if (!valid) return;
+
+    // Kiểm tra trùng lặp email đối với cơ sở dữ liệu hệ thống GearNexus
+    const existing = JSON.parse(localStorage.getItem('gearnexus_registered') || '[]');
+    const demoUsers = [{ email: 'demo@gearnexus.com' }];
+    if ([...demoUsers, ...existing].some(u => u.email === email)) {
+      const errEl = document.getElementById('register-error');
+      errEl.textContent = 'Mã định danh email này đã được kích hoạt trên hệ thống.';
+      errEl.classList.add('visible');
+      document.getElementById('email').classList.add('error');
+      return;
+    }
+
+    // Lưu thông tin tài khoản người dùng mới
+    const newUser = { name: `${firstName} ${lastName}`, email, password, phone: document.getElementById('phone').value.trim() };
+    existing.push(newUser);
+    localStorage.setItem('gearnexus_registered', JSON.stringify(existing));
+
+    // Hiển thị thông báo thành công và chuyển hướng
+    document.getElementById('register-success').classList.add('visible');
+    document.getElementById('register-btn').disabled = true;
+
+    setTimeout(() => { window.location.href = 'login.html'; }, 1400);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Về GearNexus – Hệ thống phân phối và custom Gaming Gear đỉnh cao tại Thành phố Đà Nẵng. Nâng tầm trải nghiệm gaming của bạn.">
+  <title>Về chúng tôi – GearNexus</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Kế thừa và tối ưu hóa CSS cho giao diện Gaming */
+    .about-photo {
+      width: 130px; height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary, #ff4757); /* Đổi accent sang màu gaming */
+      margin: 0 auto 20px;
+      display: block;
+    }
+
+    .about-story {
+      max-width: 660px;
+      margin: 0 auto 40px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      text-align: center;
+    }
+
+    .about-story p { font-size: 0.95rem; line-height: 1.8; margin-bottom: 16px; text-align: left; }
+    .about-story p.quote { font-style: italic; font-weight: 600; text-align: center; color: var(--primary); }
+    .about-story p:last-child { margin-bottom: 0; }
+
+    .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px; }
+
+    .value-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      text-align: center;
+      transition: transform var(--transition), border-color var(--transition);
+    }
+    .value-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary);
+    }
+
+    .value-icon { font-size: 2.2rem; margin-bottom: 12px; display: block; color: var(--primary); }
+    .value-card h3 { margin-bottom: 8px; font-size: 1.1rem; font-weight: 700; }
+    .value-card p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.5; }
+
+    .social-links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px;
+      border-radius: var(--radius);
+      background: var(--white);
+      border: 1px solid var(--border);
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .social-link:hover { border-color: var(--primary); color: var(--primary); }
+
+    .faq-section { max-width: 660px; margin: 0 auto; }
+    .faq-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: border-color var(--transition);
+    }
+
+    .faq-item:hover { border-color: var(--primary); }
+
+    .faq-q {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    .faq-toggle { color: var(--primary); font-size: 1.1rem; transition: transform 0.2s ease; }
+    .faq-item.open .faq-toggle { transform: rotate(45deg); }
+
+    .faq-a {
+      display: none;
+      margin-top: 10px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .faq-item.open .faq-a { display: block; }
+
+    @media (max-width: 768px) {
+      .values-grid { grid-template-columns: 1fr; }
+      .about-story { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/images/logo.png" alt="GearNexus" class="nav-logo-img"> GearNexus
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Trang chủ</a>
+      <a href="shop.html">Cửa hàng</a>
+      <a href="about.html" class="active">Về chúng tôi</a>
+    </div>
+    <div class="nav-actions">
+      <div id="auth-nav" style="display:flex;align-items:center;gap:8px"></div>
+      <a href="cart.html" class="nav-cart-btn" aria-label="Giỏ hàng">
+        🛒 Giỏ hàng<span class="cart-badge" id="cart-badge">0</span>
+      </a>
+      <button class="nav-menu-btn" id="menu-btn" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-drawer-overlay" id="drawer-overlay"></div>
+<div class="nav-drawer" id="nav-drawer">
+  <a href="index.html">🏠 Trang chủ</a>
+  <a href="shop.html">🛍️ Cửa hàng</a>
+  <a href="about.html">ℹ️ Về chúng tôi</a>
+  <a href="cart.html">🛒 Giỏ hàng</a>
+</div>
+
+<div class="page-header">
+  <div class="container" style="text-align:center">
+    <div class="breadcrumb" style="justify-content:center">
+      <a href="index.html">Trang chủ</a><span class="sep">/</span><span>Về chúng tôi</span>
+    </div>
+    <h1>Về GearNexus</h1>
+    <p style="margin-top:8px">Hệ sinh thái Gaming Gear đỉnh cao — Hoạt động tại Thành phố Đà Nẵng, Việt Nam</p>
+  </div>
+</div>
+
+<section class="section" style="padding-top:32px">
+  <div class="container">
+    
+    <div class="about-story">
+      <img src="assets/images/avatar.png" alt="GearNexus Team" class="about-photo">
+      <p class="quote">
+        "GearNexus – Kết nối đam mê, nâng tầm trải nghiệm, bứt phá mọi giới hạn trận đấu!"
+      </p>
+      <p>
+        Được thành lập bởi những game thủ và chuyên gia công nghệ tại Đà Nẵng, <strong>GearNexus</strong> ra đời với sứ mệnh mang lại những vũ khí chiến đấu mượt mà nhất cho anh em sướng tay chinh phục mọi tựa game.
+      </p>
+      <p>
+        Chúng tôi tuyển chọn, phân phối chính hãng và trực tiếp custom các dòng Bàn phím, chuột gaming, tai nghe cao cấp. Mỗi sản phẩm tại GearNexus đều trải qua quy trình kiểm thử nghiêm ngặt về độ phản hồi, độ bền switch và độ trễ để đảm bảo hiệu năng tối đa khi đến tay bạn.
+      </p>
+    </div>
+
+    <h2 style="text-align:center; margin-bottom:24px;">Giá Trị Cốt Lõi</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <span class="value-icon">⚡</span>
+        <h3>Hiệu Năng Tuyệt Đối</h3>
+        <p>Cam kết 100% sản phẩm chính hãng, tối ưu thông số kỹ thuật chuẩn Esport nhằm đem lại lợi thế phản xạ nhanh nhất.</p>
+      </div>
+      <div class="value-grid-item value-card">
+        <span class="value-icon">🛠️</span>
+        <h3>Cá Nhân Hóa Đỉnh Cao</h3>
+        <p>Cung cấp dịch vụ mod phím, custom switch và keycap độc quyền giúp góc máy mang đậm chất riêng của bạn.</p>
+      </div>
+      <div class="value-card">
+        <span class="value-icon">🛡️</span>
+        <h3>Hậu Mãi Toàn Diện</h3>
+        <p>Bảo hành 1 đổi 1 nhanh chóng, hỗ trợ kỹ thuật và vệ sinh gear trọn đời cho mọi thành viên thuộc GearNexus.</p>
+      </div>
+    </div>
+
+    <h2 style="text-align:center; margin-bottom:24px;">Kết Nối Với Cộng Đồng Game Thủ</h2>
+    <div class="social-links">
+      <a href="#" class="social-link"><i class="fab fa-facebook"></i> Facebook Fanpage</a>
+      <a href="#" class="social-link"><i class="fab fa-discord"></i> Discord Server</a>
+      <a href="#" class="social-link"><i class="fab fa-youtube"></i> YouTube Channel</a>
+      <a href="#" class="social-link"><i class="fab fa-tiktok"></i> TikTok Studio</a>
+    </div>
+
+    <div class="faq-section">
+      <h2 style="text-align:center; margin-bottom:24px;">Câu Hỏi Thường Gặp</h2>
+      
+      <div class="faq-item">
+        <div class="faq-q">
+          <span>GearNexus có giao hàng hỏa tốc trong ngày tại Đà Nẵng không?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-a">
+          Có, GearNexus hỗ trợ giao hàng hỏa tốc trong vòng 1-2 giờ đối với các khu vực nội thành Đà Nẵng và miễn phí vận chuyển cho đơn hàng từ 1.000.000đ.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span>Sản phẩm custom (Bàn phím mod sẵn) có được bảo hành không?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-a">
+          Tất cả sản phẩm Bàn phím custom bởi GearNexus vẫn được hưởng chế độ bảo hành mạch và switch từ 6 đến 12 tháng tùy gói dịch vụ bạn lựa chọn.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span>Tôi có thể đến cửa hàng trải nghiệm trực tiếp trước khi mua không?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-a">
+          Rất khuyến khích ạ! Bạn có thể ghé showroom của GearNexus tại Đà Nẵng để trải nghiệm thử các loại switch (Clicky, Linear, Tactile) và các dòng chuột test trước khi đưa ra quyết định.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  // Logic đóng/mở FAQ
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => {
+      item.classList.toggle('open');
+      const toggle = item.querySelector('.faq-toggle');
+      if (item.classList.contains('open')) {
+        toggle.textContent = '×';
+      } else {
+        toggle.textContent = '+';
+      }
+    });
+  });
+
+  // Sơ bộ Logic Menu di động (Nếu chưa có ở file js ngoài)
+  const menuBtn = document.getElementById('menu-btn');
+  const navDrawer = document.getElementById('nav-drawer');
+  const overlay = document.getElementById('drawer-overlay');
+
+  if(menuBtn && navDrawer && overlay) {
+    menuBtn.addEventListener('click', () => {
+      navDrawer.classList.toggle('active');
+      overlay.classList.toggle('active');
+    });
+    overlay.addEventListener('click', () => {
+      navDrawer.classList.remove('active');
+      overlay.classList.remove('active');
+    });
+  }
+</script>
+
+</body>
+</html>

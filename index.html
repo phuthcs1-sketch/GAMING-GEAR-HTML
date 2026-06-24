@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GearNexus – Hệ sinh thái Gaming Gear cao cấp và custom Bàn phím chuyên nghiệp. Trải nghiệm chuột gaming, tai nghe Esport đỉnh cao chính hãng.">
+  <title>GearNexus – Premium Gaming Gear & Custom Mech-Key</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* ---- Hero ---- */
+    .hero {
+      padding: calc(var(--nav-height) + 60px) 0 60px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .hero-title { margin-bottom: 16px; }
+    .hero-title span { color: var(--primary); }
+
+    .hero-desc {
+      font-size: 1rem;
+      margin-bottom: 28px;
+      max-width: 440px;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 28px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-item .value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .stat-item .label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .hero-image {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 1;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    /* ---- Categories ---- */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+    }
+
+    .category-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .category-card:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .cat-emoji { font-size: 1.8rem; }
+    .cat-name { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .cat-count { font-size: 0.72rem; color: var(--text-muted); }
+
+    /* ---- Trust ---- */
+    .trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+    /* ---- Testimonials ---- */
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+    /* ---- CTA ---- */
+    .cta-box {
+      background: var(--primary);
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      text-align: center;
+      color: white;
+    }
+
+    .cta-box h2 { color: white; margin-bottom: 10px; }
+    .cta-box p { color: rgba(255,255,255,0.8); margin-bottom: 24px; }
+
+    .btn-white {
+      background: white;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .btn-white:hover { background: #F3F4F6; }
+
+    @media (max-width: 1024px) {
+      .categories-grid { grid-template-columns: repeat(3, 1fr); }
+      .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+      .hero-image { display: none; }
+      .trust-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 16px; }
+      .cta-box { padding: 36px 24px; }
+    }
+
+    @media (max-width: 480px) {
+      .categories-grid { grid-template-columns: repeat(2, 1fr); }
+      .trust-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/images/logo.png" alt="GearNexus" class="nav-logo-img"> GearNexus
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Trang chủ</a>
+      <a href="shop.html">Cửa hàng</a>
+      <a href="about.html">Giới thiệu</a>
+    </div>
+    <div class="nav-actions">
+      <div id="auth-nav" style="display:flex;align-items:center;gap:8px"></div>
+      <a href="cart.html" class="nav-cart-btn" id="nav-cart-btn" aria-label="Giỏ hàng">
+        🛒 Giỏ hàng
+        <span class="cart-badge" id="cart-badge">0</span>
+      </a>
+      <button class="nav-menu-btn" id="menu-btn" aria-label="Mở menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-drawer-overlay" id="drawer-overlay"></div>
+<div class="nav-drawer" id="nav-drawer">
+  <a href="index.html">🏠 Trang chủ</a>
+  <a href="shop.html">🛍️ Cửa hàng</a>
+  <a href="about.html">ℹ️ Giới thiệu</a>
+  <a href="cart.html">🛒 Giỏ hàng</a>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-tag anim-fade-up">⚡ Hệ Sinh Thái Gaming Cao Cấp</div>
+        <h1 class="hero-title anim-fade-up delay-100">
+          Trang Bị Chất,<br>
+          <span>Bứt Phá Giới Hạn</span>
+        </h1>
+        <p class="hero-desc anim-fade-up delay-200">
+          "GearNexus cung cấp giải pháp gaming gear tối tân chuyên nghiệp — từ các dòng chuột siêu nhẹ, Bàn phím custom lube sẵn đến hệ thống âm thanh Esport chân thực. Đỉnh cao hiệu năng, sẵn sàng tối ưu cho mọi trận chiến."
+        </p>
+        <div class="hero-btns anim-fade-up delay-300">
+          <a href="shop.html" class="btn btn-primary btn-lg">Trang bị ngay →</a>
+          <a href="about.html" class="btn btn-secondary btn-lg">Tìm hiểu thêm</a>
+        </div>
+        <div class="hero-stats anim-fade-up delay-300">
+          <div class="stat-item">
+            <div class="value">500+</div>
+            <div class="label">Sản phẩm High-End</div>
+          </div>
+          <div class="stat-item">
+            <div class="value">10k+</div>
+            <div class="label">Trận đấu đồng hành</div>
+          </div>
+          <div class="stat-item">
+            <div class="value">4.9★</div>
+            <div class="label">Đánh giá từ Game thủ</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="https://picsum.photos/seed/gear-setup/600/600" alt="Góc máy PC Gaming Gear cao cấp GearNexus">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg)">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Mua sắm theo danh mục vũ khí</h2>
+      <p>Lựa chọn danh mục thiết bị để nâng cấp kỹ năng của bạn</p>
+    </div>
+    <div class="categories-grid" id="categories-grid"></div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--white)">
+  <div class="container">
+    <div class="section-header reveal" style="display:flex;justify-content:space-between;align-items:flex-end">
+      <div>
+        <h2>Vũ khí chiến đấu nổi bật</h2>
+        <p>Các thiết bị Gaming Gear bán chạy và được các tuyển thủ chuyên nghiệp tin dùng</p>
+      </div>
+      <a href="shop.html" class="btn btn-secondary" style="flex-shrink:0">Xem tất cả kho hàng →</a>
+    </div>
+    <div class="products-grid" id="featured-grid"></div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg)">
+  <div class="container">
+    <div class="trust-grid">
+      <div class="trust-badge reveal delay-1">
+        <div class="trust-icon" style="background:#DCFCE7;color:var(--green)">⚡</div>
+        <div>
+          <h4>Tốc độ phản hồi cực hạn</h4>
+          <p style="font-size:0.85rem;margin-top:4px">Sản phẩm tích hợp công nghệ kết nối không dây siêu tốc, độ trễ gần như bằng 0, tối ưu hóa tuyệt đối chỉ số phản xạ.</p>
+        </div>
+      </div>
+      <div class="trust-badge reveal delay-2">
+        <div class="trust-icon" style="background:var(--primary-light);color:var(--primary)">🛡️</div>
+        <div>
+          <h4>Cam kết 100% chính hãng</h4>
+          <p style="font-size:0.85rem;margin-top:4px">Đại lý phân phối ủy quyền từ các thương hiệu lớn. Chế độ bảo hành 1 đổi 1 nhanh chóng, an tâm tuyệt đối.</p>
+        </div>
+      </div>
+      <div class="trust-badge reveal delay-3">
+        <div class="trust-icon" style="background:#DBEAFE;color:#2563EB">🛠️</div>
+        <div>
+          <h4>Dịch vụ Custom chuyên nghiệp</h4>
+          <p style="font-size:0.85rem;margin-top:4px">Hỗ trợ cân cáp, lube switch, lót foam tiêu âm Bàn phím theo yêu cầu cá nhân hóa khắt khe nhất của bạn.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--white)">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Ý kiến từ các chiến binh Pro-Gamers</h2>
+      <p>Những trải nghiệm thực tế từ các game thủ và streamer trong cộng đồng</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal delay-1">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Mình vừa sắm combo Bàn phím custom và chuột siêu nhẹ tại GearNexus. Cảm giác bấm switch cực mượt, âm gõ phím rất trầm ấm mượt mà không bị lóc cóc ở các nút dài. Đóng gói cẩn thận bọc chống sốc cực kỳ chỉn chu!"</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar" src="https://picsum.photos/seed/gamer1/80/80" alt="Hoàng N.">
+          <div>
+            <div class="testimonial-name">Hoàng Nguyễn</div>
+            <div style="font-size:0.75rem;color:var(--text-light)">Đà Nẵng (Streamer)</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="testimonial-card reveal delay-2">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Đã sử dụng dịch vụ mod phím cơ tại đây, các bạn kỹ thuật viên hỗ trợ căn chỉnh stab siêu chuẩn xác, lube switch đều tay giúp tăng rõ rệt tốc độ phản hồi khi chơi các tựa game Esport Esport FPS căng thẳng."</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar" src="https://picsum.photos/seed/gamer2/80/80" alt="Minh T.">
+          <div>
+            <div class="testimonial-name">Minh Trần</div>
+            <div style="font-size:0.75rem;color:var(--text-light)">Hà Nội (Rank Radiant)</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="testimonial-card reveal delay-3">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Tai nghe gaming mua ở GearNexus định vị tiếng chân thực sự chính xác. Sản phẩm chính hãng đầy đủ tem mác phân phối, nhân viên tư vấn nhiệt tình, giao hỏa tốc nội thành Đà Nẵng chưa đầy 1 tiếng đồng hồ."</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar" src="https://picsum.photos/seed/gamer3/80/80" alt="Anh P.">
+          <div>
+            <div class="testimonial-name">Anh Phạm</div>
+            <div style="font-size:0.75rem;color:var(--text-light)">Đà Nẵng (Game thủ)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg)">
+  <div class="container">
+    <div class="cta-box reveal">
+      <h2>Sẵn sàng nâng cấp tối đa sức mạnh góc máy của bạn?</h2>
+      <p>Khám phá trọn bộ sưu tập siêu phẩm chuột gaming, Bàn phím đỉnh cao và các phụ kiện custom giới hạn độc quyền.</p>
+      <a href="shop.html" class="btn btn-white btn-lg">Ghé kho vũ khí GearNexus</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo" style="margin-bottom:10px">
+          <img src="assets/images/logo.png" alt="GearNexus" class="nav-logo-img"> GearNexus
+        </div>
+        <p>Hệ thống cung cấp, sửa chữa và modding thiết bị ngoại vi chuyên nghiệp chuẩn Esport hàng đầu.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Trang bị Gaming</h4>
+        <ul>
+          <li><a href="shop.html?cat=Keyboard">Bàn phím</a></li>
+          <li><a href="shop.html?cat=Mouse">Chuột gaming</a></li>
+          <li><a href="shop.html?cat=Audio">Tai nghe Esport</a></li>
+          <li><a href="shop.html?cat=Custom">Dịch vụ Custom</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Hỗ trợ khách hàng</h4>
+        <ul>
+          <li><a href="about.html">Về GearNexus</a></li>
+          <li><a href="#">Quy trình Modding</a></li>
+          <li><a href="#">Chính sách giao hỏa tốc</a></li>
+          <li><a href="#">Tra cứu bảo hành 1 đổi 1</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Trụ sở Liên hệ</h4>
+        <ul>
+          <li><a href="#">sales@gearnexus.com</a></li>
+          <li><a href="#">Hotline/Zalo: 0905 xxx xxx</a></li>
+          <li><a href="#">Liên Chiểu, Thành phố Đà Nẵng</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 GearNexus. All Rights Reserved.</span>
+      <span>Hệ sinh thái thiết bị công nghệ cao cấp — Engineered for Victories.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script>
+  // Tự động đếm số lượng sản phẩm theo từng danh mục gear chiến game
+  const counts = {};
+  if (typeof PRODUCTS !== 'undefined') {
+    PRODUCTS.forEach(p => { counts[p.category] = (counts[p.category] || 0) + 1; });
+  }
+
+  // Render danh mục động hoàn toàn dựa vào CONFIG.categories của GearNexus
+  if (typeof CONFIG !== 'undefined' && CONFIG.categories) {
+    document.getElementById('categories-grid').innerHTML =
+      CONFIG.categories.map(cat => `
+        <a href="shop.html?cat=${cat.name}" class="category-card reveal">
+          <div class="category-emoji">${cat.emoji}</div>
+          <h3 class="category-name">${cat.name}</h3>
+          <span class="category-count">${counts[cat.name] || 0} thiết bị</span>
+        </a>
+      `).join('');
+  }
+</script>
+</body>
+</html>

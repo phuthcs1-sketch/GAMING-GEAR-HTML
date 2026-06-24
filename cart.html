@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Giỏ hàng – Kiểm tra và hoàn tất đơn hàng thiết bị Gaming Gear cao cấp tại GearNexus.">
+  <title>Giỏ hàng – GearNexus</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .cart-items-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .promo-row { display: flex; gap: 8px; margin: 14px 0; }
+
+    .promo-input {
+      flex: 1;
+      padding: 9px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+
+    .promo-input::placeholder { color: var(--text-light); }
+    .promo-input:focus { border-color: var(--primary); }
+
+    .shipping-bar {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .bar-track { height: 4px; background: #E5E7EB; border-radius: 2px; margin-top: 6px; }
+    .bar-fill { height: 100%; background: var(--primary); border-radius: 2px; transition: width 0.4s ease; }
+
+    @media (max-width: 768px) {
+      .cart-layout { grid-template-columns: 1fr; }
+      .order-summary { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="assets/images/logo.png" alt="GearNexus" class="nav-logo-img"> GearNexus</a>
+    <div class="nav-links">
+      <a href="index.html">Trang chủ</a>
+      <a href="shop.html">Cửa hàng</a>
+      <a href="about.html">Về chúng tôi</a>
+    </div>
+    <div class="nav-actions">
+      <div id="auth-nav" style="display:flex;align-items:center;gap:8px"></div>
+      <a href="cart.html" class="nav-cart-btn" aria-label="Giỏ hàng">
+        🛒 Giỏ hàng<span class="cart-badge" id="cart-badge">0</span>
+      </a>
+      <button class="nav-menu-btn" id="menu-btn" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+<div class="nav-drawer-overlay" id="drawer-overlay"></div>
+<div class="nav-drawer" id="nav-drawer">
+  <a href="index.html">🏠 Trang chủ</a>
+  <a href="shop.html">🛍️ Cửa hàng</a>
+  <a href="about.html">ℹ️ Về chúng tôi</a>
+  <a href="cart.html">🛒 Giỏ hàng</a>
+</div>
+
+<div class="page-header">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="index.html">Trang chủ</a><span class="sep">/</span><span>Giỏ hàng</span>
+    </div>
+    <h1>Giỏ hàng của bạn</h1>
+  </div>
+</div>
+
+<section class="section" style="padding-top:32px">
+  <div class="container">
+
+    <div id="cart-empty" style="display:none">
+      <div class="empty-state">
+        <div class="empty-state-icon">⚡</div>
+        <h3>Giỏ hàng chiến game đang trống</h3>
+        <p>Bạn chưa thêm thiết bị gaming gear nào vào hành trang của mình.</p>
+        <a href="shop.html" class="btn btn-primary" style="margin-top:20px;display:inline-flex">Trang bị ngay</a>
+      </div>
+    </div>
+
+    <div id="cart-filled" style="display:none">
+      <div class="cart-layout">
+
+        <div class="cart-items-card">
+          <div class="cart-header">
+            <h3 id="cart-count-label">0 sản phẩm</h3>
+            <button class="btn btn-ghost btn-sm" id="clear-cart-btn">Xóa tất cả</button>
+          </div>
+          <div id="cart-items-list"></div>
+        </div>
+
+        <div class="order-summary">
+          <h3 style="margin-bottom:18px">Tóm tắt đơn hàng</h3>
+
+          <div class="shipping-bar" id="shipping-bar">
+            <div id="shipping-bar-text">Mua thêm để nhận ưu đãi Free Ship toàn quốc!</div>
+            <div class="bar-track">
+              <div class="bar-fill" id="shipping-bar-fill" style="width:0%"></div>
+            </div>
+          </div>
+
+          <div class="summary-row">
+            <span class="label">Tạm tính</span>
+            <span id="summary-subtotal">0 đ</span>
+          </div>
+          <div class="summary-row">
+            <span class="label">Phí vận chuyển</span>
+            <span id="summary-shipping">30.000 đ</span>
+          </div>
+
+          <div class="promo-row">
+            <input class="promo-input" type="text" id="promo-input" placeholder="Mã giảm giá (NEXUS...)">
+            <button class="btn btn-ghost btn-sm" id="promo-btn">Áp dụng</button>
+          </div>
+
+          <div class="summary-row summary-total">
+            <span class="label">Tổng cộng</span>
+            <span id="summary-total">0 đ</span>
+          </div>
+
+          <button class="btn btn-primary" style="width:100%;margin-top:16px;padding:13px" id="checkout-btn">
+            Tiến hành đặt hàng →
+          </button>
+
+          <p style="font-size:0.75rem;text-align:center;margin-top:10px;color:var(--text-light)">
+            Bản demo hệ thống — chưa thực hiện cổng thanh toán thực tế.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal-overlay" id="success-modal">
+  <div class="modal">
+    <div class="modal-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">✓</div>
+    <h2 style="margin-bottom:10px">Khởi tạo đơn hàng thành công!</h2>
+    <p style="margin-bottom:6px">Cảm ơn chiến binh đã tin tưởng chọn lựa GearNexus!</p>
+    <p style="font-size:0.86rem;margin-bottom:24px;color: var(--text-muted)">Đội ngũ kỹ thuật viên sẽ nhanh chóng liên hệ với bạn qua Số điện thoại / Zalo để xác nhận cấu hình custom (nếu có) và chuẩn bị đóng gói giao hỏa tốc.</p>
+    <div style="display:flex;gap:10px">
+      <a href="shop.html" class="btn btn-primary" style="flex:1">Tiếp tục mua sắm</a>
+      <a href="index.html" class="btn btn-secondary" style="flex:1">Trang chủ</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2026 GearNexus. All Rights Reserved.</span>
+      <a href="shop.html" style="color:var(--primary)">← Quay lại cửa hàng</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script>
+  const SHIPPING_THRESHOLD = CONFIG.shipping.freeThreshold;
+  const SHIPPING_FEE       = CONFIG.shipping.defaultFee;
+
+  function renderCartPage() {
+    const items = getCartItems();
+    const emptyEl = document.getElementById('cart-empty');
+    const filledEl = document.getElementById('cart-filled');
+
+    if (items.length === 0) {
+      emptyEl.style.display = 'block';
+      filledEl.style.display = 'none';
+      return;
+    }
+
+    emptyEl.style.display = 'none';
+    filledEl.style.display = 'block';
+
+    const totalItems = items.reduce((s, i) => s + i.qty, 0);
+    document.getElementById('cart-count-label').textContent = `${totalItems} thiết bị`;
+
+    document.getElementById('cart-items-list').innerHTML = items.map(item => `
+      <div class="cart-item">
+        <img class="cart-item-img"
+          src="${item.product.images[0]}"
+          alt="${item.product.name}"
+          onerror="this.src='https://picsum.photos/seed/gear${item.productId}/160/160'">
+        <div class="cart-item-info">
+          <a href="product.html?id=${item.productId}" class="cart-item-name">${item.product.name}</a>
+          <div class="cart-item-meta">
+            <span class="badge ${getConditionClass(item.product.condition)}">${item.product.condition}</span>
+          </div>
+          <div class="cart-item-price">${formatPrice(item.product.price * item.qty)}</div>
+        </div>
+        <div class="cart-item-actions">
+          <div class="qty-stepper">
+            <button class="qty-btn" onclick="doUpdateQty(${item.productId}, -1)">−</button>
+            <span class="qty-value">${item.qty}</span>
+            <button class="qty-btn" onclick="doUpdateQty(${item.productId}, 1)">+</button>
+          </div>
+          <button class="cart-remove" onclick="doRemove(${item.productId})">✕</button>
+        </div>
+      </div>
+    `).join('');
+
+    const subtotal = getCartSubtotal();
+    const shipping = subtotal >= SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
+    const total = subtotal + shipping;
+
+    document.getElementById('summary-subtotal').textContent = formatPrice(subtotal);
+    document.getElementById('summary-shipping').textContent = shipping === 0 ? 'MIỄN PHÍ 🎉' : formatPrice(shipping);
+    document.getElementById('summary-total').textContent = formatPrice(total);
+
+    const pct = Math.min((subtotal / SHIPPING_THRESHOLD) * 100, 100);
+    document.getElementById('shipping-bar-fill').style.width = pct + '%';
+    if (subtotal >= SHIPPING_THRESHOLD) {
+      document.getElementById('shipping-bar-text').textContent = '🎉 Đơn hàng đã đủ điều kiện Miễn phí vận chuyển!';
+    } else {
+      const rem = SHIPPING_THRESHOLD - subtotal;
+      document.getElementById('shipping-bar-text').textContent = `Mua thêm ${formatPrice(rem)} để được miễn phí vận chuyển`;
+    }
+  }
+
+  function doUpdateQty(productId, delta) { updateCartQty(productId, delta); renderCartPage(); }
+  function doRemove(productId) { removeFromCart(productId); showToast('Đã bỏ sản phẩm khỏi hành trang.', 'success'); renderCartPage(); }
+
+  document.getElementById('clear-cart-btn').addEventListener('click', () => {
+    if (confirm('Xóa toàn bộ sản phẩm trong giỏ hàng hiện tại?')) { clearCart(); renderCartPage(); }
+  });
+
+  document.getElementById('promo-btn').addEventListener('click', () => {
+    const raw = document.getElementById('promo-input').value.trim();
+    if (!CONFIG.features.promoCodes) return;
+    const result = validatePromoCode(raw);
+    showToast(
+      result.valid
+        ? `🎉 Đã áp dụng mã chiến binh ${result.label}! (Demo)`
+        : '❌ Mã giảm giá không hợp tồn tại hoặc đã hết hạn.',
+      result.valid ? 'success' : 'error'
+    );
+  });
+
+  document.getElementById('checkout-btn').addEventListener('click', () => {
+    document.getElementById('success-modal').classList.add('open');
+    clearCart();
+    setTimeout(renderCartPage, 300);
+  });
+
+  document.getElementById('success-modal').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+
+  renderCartPage();
+</script>
+</body>
+</html>
