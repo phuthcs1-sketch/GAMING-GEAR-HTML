@@ -101,36 +101,6 @@ const PRODUCTS = [
   },
   {
     id: 7,
-    name: "Bàn phím cơ ASUS ROG Azoth Wireless OLED (White Mod)",
-    category: "Bàn phím",
-    price: 4850000,
-    originalPrice: 5800000,
-    condition: "Like New",
-    stock: 2,
-    rating: 5.0,
-    reviews: 21,
-    images: ["assets/images/ban-phim-co-gaming-khong-day-asus-rog-azoth-x1.jpg"],
-    description: "Đỉnh cao bàn phím cơ hi-end 75% từ nhà ASUS ROG. Tích hợp màn hình hiển thị OLED đa chức năng cực chất, kết nối 3 chế độ linh hoạt, cấu trúc gasket-mount đi kèm bộ dụng cụ lube switch chuyên nghiệp cho dân chơi custom.",
-    tags: ["asus", "rog", "azoth", "oled", "premium", "gasket"],
-    dateAdded: "2026-05-28T21:10:00Z"
-  },
-  {
-    id: 8,
-    name: "Chuột không dây Logitech G Pro X Superlight 2 (White/Black Split)",
-    category: "Chuột",
-    price: 3450000,
-    originalPrice: 3990000,
-    condition: "Fair",
-    stock: 2,
-    rating: 4.7,
-    reviews: 93,
-    images: ["assets/images/chuot-gaming-khong-day-logitech-pro-x2-superstrike-lightspeed_4_ed024c14667549e08d303595794dce75_master.jpg"],
-    description: "Phiên bản phối màu Custom Split (Nút đen - Thân trắng) độc đáo của dòng chuột siêu nhẹ Pro X Superlight 2. Tần số phản hồi không dây lên tới 2000Hz (2K) cực khủng, mang lại lợi thế phản xạ tối đa trong game FPS.",
-    tags: ["logitech", "superlight2", "pro-x", "fps", "lightweight"],
-    dateAdded: "2026-02-14T13:18:00Z"
-  },
-  {
-    id: 9,
     name: "Chuột gaming Logitech Không dây G Pro X Superlight (Black Edition)",
     category: "Chuột",
     price: 2150000,
@@ -145,7 +115,7 @@ const PRODUCTS = [
     dateAdded: "2026-06-25T01:00:00Z"
   },
   {
-    id: 10,
+    id: 8,
     name: "Bàn phím cơ Bluetooth Dareu EK75 Pro Cloudy Aqua",
     category: "Bàn phím",
     price: 950000,
@@ -160,7 +130,7 @@ const PRODUCTS = [
     dateAdded: "2026-06-25T01:15:00Z"
   },
   {
-    id: 11,
+    id: 9,
     name: "Tai nghe Bluetooth True Wireless Gaming Asus Rog Cetra",
     category: "Tai nghe",
     price: 1590000,
@@ -175,7 +145,7 @@ const PRODUCTS = [
     dateAdded: "2026-06-25T01:20:00Z"
   },
   {
-    id: 12,
+    id: 10,
     name: "Tai nghe Gaming Logitech G733 LIGHTSPEED Wireless 7.1 RGB (White New)",
     category: "Tai nghe",
     price: 2790000,

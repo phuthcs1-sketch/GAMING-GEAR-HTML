@@ -9,7 +9,7 @@ const CONFIG = {
   site: {
     name:        "GearNexus",
     tagline:     "High-Performance Gaming Gear, Engineered for Champions",
-    description: "Hệ sinh thái thiết bị ngoại vi gaming gear cao cấp — Bàn phím chuyên dụng, chuột gaming tốc độ cao, tai nghe tái tạo âm thanh chuẩn phòng thu và các phụ kiện custom tối tân.",
+    description: "Hệ sinh thái thiết bị ngoại vi gaming gear cao cấp — Bàn phím chuyên dụng, chuột gaming tốc độ cao, Tai nghe tái tạo âm thanh chuẩn phòng thu và các phụ kiện custom tối tân.",
     logo:        "assets/images/logo.png",
     url:         "https://gearnexus.com",        // cập nhật khi triển khai thực tế
     language:    "vi",
@@ -53,7 +53,7 @@ const CONFIG = {
   categories: [
     { name: "Bàn phím",    emoji: "⌨️" },
     { name: "Chuột",       emoji: "🖱️" },
-    { name: "Tai Nghe",       emoji: "🎧" },
+    { name: "Tai nghe",       emoji: "🎧" },
   ],
 
   // ---- Mã giảm giá / Ưu đãi chiến binh ----
@@ -82,7 +82,7 @@ const CONFIG = {
   seo: {
     titleSuffix:  " – Hệ Sinh Thái Gaming Gear Cao Cấp", 
     ogImage:      "assets/og-image.jpg", 
-    keywords:     "GearNexus, gaming gear, ban phim co, chuot gaming, tai nghe gaming, custom keyboard, switch gaming, Da Nang, Vietnam",
+    keywords:     "GearNexus, gaming gear, ban phim co, chuot gaming, Tai nghe gaming, custom keyboard, switch gaming, Da Nang, Vietnam",
   },
 
   // ---- Chân trang (Footer) ----

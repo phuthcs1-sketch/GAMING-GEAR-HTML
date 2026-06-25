@@ -203,7 +203,7 @@
           "GearNexus cung cấp giải pháp gaming gear tối tân chuyên nghiệp — từ các dòng chuột siêu nhẹ, Bàn phím custom lube sẵn đến hệ thống âm thanh Esport chân thực. Đỉnh cao hiệu năng, sẵn sàng tối ưu cho mọi trận chiến."
         </p>
         <div class="hero-btns anim-fade-up delay-300">
-          <a href="shop.html" class="btn btn-primary btn-lg">Trang bị ngay →</a>
+          <a href="shop.html" class="btn btn-primary btn-lg">Mua ngay →</a>
           <a href="about.html" class="btn btn-secondary btn-lg">Tìm hiểu thêm</a>
         </div>
         <div class="hero-stats anim-fade-up delay-300">
@@ -231,7 +231,7 @@
 <section class="section" style="background:var(--bg)">
   <div class="container">
     <div class="section-header reveal">
-      <h2>Mua sắm theo danh mục vũ khí</h2>
+      <h2>Mua sắm theo danh mục</h2>
       <p>Lựa chọn danh mục thiết bị để nâng cấp kỹ năng của bạn</p>
     </div>
     <div class="categories-grid" id="categories-grid"></div>
@@ -242,7 +242,7 @@
   <div class="container">
     <div class="section-header reveal" style="display:flex;justify-content:space-between;align-items:flex-end">
       <div>
-        <h2>Vũ khí chiến đấu nổi bật</h2>
+        <h2>Gaming Gear nổi bật</h2>
         <p>Các thiết bị Gaming Gear bán chạy và được các tuyển thủ chuyên nghiệp tin dùng</p>
       </div>
       <a href="shop.html" class="btn btn-secondary" style="flex-shrink:0">Xem tất cả kho hàng →</a>
@@ -355,7 +355,6 @@
           <li><a href="shop.html?cat=Keyboard">Bàn phím</a></li>
           <li><a href="shop.html?cat=Mouse">Chuột gaming</a></li>
           <li><a href="shop.html?cat=Audio">Tai nghe Esport</a></li>
-          <li><a href="shop.html?cat=Custom">Dịch vụ Custom</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -389,22 +388,36 @@
 <script src="js/auth.js"></script>
 <script src="js/main.js"></script>
 <script>
-  // Tự động đếm số lượng sản phẩm theo từng danh mục gear chiến game
+  // 1. Tự động đếm số lượng sản phẩm theo từng danh mục gear
   const counts = {};
   if (typeof PRODUCTS !== 'undefined') {
     PRODUCTS.forEach(p => { counts[p.category] = (counts[p.category] || 0) + 1; });
   }
 
-  // Render danh mục động hoàn toàn dựa vào CONFIG.categories của GearNexus
+  // 2. Render danh mục động (ĐÃ SỬA CLASS CHO KHỚP VỚI CSS: cat-emoji, cat-name, cat-count)
   if (typeof CONFIG !== 'undefined' && CONFIG.categories) {
-    document.getElementById('categories-grid').innerHTML =
-      CONFIG.categories.map(cat => `
+    const categoriesGrid = document.getElementById('categories-grid');
+    if (categoriesGrid) {
+      categoriesGrid.innerHTML = CONFIG.categories.map(cat => `
         <a href="shop.html?cat=${cat.name}" class="category-card reveal">
-          <div class="category-emoji">${cat.emoji}</div>
-          <h3 class="category-name">${cat.name}</h3>
-          <span class="category-count">${counts[cat.name] || 0} thiết bị</span>
+          <div class="cat-emoji">${cat.emoji}</div>
+          <h3 class="cat-name">${cat.name}</h3>
+          <span class="cat-count">${counts[cat.name] || 0} thiết bị</span>
         </a>
       `).join('');
+    }
+  }
+
+  // 3. BỔ SUNG: Render sản phẩm nổi bật vào #featured-grid trên Trang chủ
+  if (typeof PRODUCTS !== 'undefined' && typeof renderProductCard === 'function') {
+    const featuredGrid = document.getElementById('featured-grid');
+    if (featuredGrid) {
+      // Lấy ra 4 sản phẩm đầu tiên từ file dữ liệu để làm hàng nổi bật
+      const featuredProducts = PRODUCTS.slice(0, 4); 
+      
+      // Sử dụng lại hàm renderProductCard đã viết ở file main.js để bơm HTML vào
+      featuredGrid.innerHTML = featuredProducts.map(renderProductCard).join('');
+    }
   }
 </script>
 </body>
