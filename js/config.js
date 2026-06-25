@@ -58,9 +58,9 @@ const CONFIG = {
 
   // ---- Mã giảm giá / Ưu đãi chiến binh ----
   promoCodes: {
-    "NEXUS10":   { discount: 10, label: "Giảm 10% tổng giá trị đơn hàng" },
-    "WELCOME":   { discount: 15, label: "Ưu đãi thành viên mới giảm 15%" },
-    "GAMER5":    { discount:  5, label: "Mã giảm giá đặc quyền Gamer 5%"  },
+    "NEXUS10":   { discount: 10, label: "Giảm 10% tổng giá trị đơn hàng", isActive: true },
+    "WELCOME":   { discount: 15, label: "Ưu đãi thành viên mới giảm 15%", isActive: true },
+    "GAMER5":    { discount:  5, label: "Mã giảm giá đặc quyền Gamer 5%", isActive: true },
   },
 
   // ---- Cấu hình Trang cửa hàng ----
@@ -117,7 +117,12 @@ function getCategoryEmoji(name) {
 
 function validatePromoCode(code) {
   const entry = CONFIG.promoCodes[code.toUpperCase()];
-  if (!entry) return { valid: false };
+  if (!entry) return { valid: false, message: "Mã giảm giá không tồn tại!" };
+  
+  if (entry.isActive === false) {
+    return { valid: false, message: "Mã giảm giá này đã hết hạn sử dụng!" };
+  }
+  
   return { valid: true, ...entry };
 }
 

@@ -102,3 +102,74 @@ function updateCartBadge() {
     badge.classList.toggle('visible', count > 0);
   });
 }
+function getActivePromo() {
+  try {
+    return JSON.parse(sessionStorage.getItem('gearnexus_active_promo')) || null;
+  } catch { return null; }
+}
+
+function setActivePromo(promo) {
+  if (promo) {
+    sessionStorage.setItem('gearnexus_active_promo', JSON.stringify(promo));
+  } else {
+    sessionStorage.removeItem('gearnexus_active_promo');
+  }
+}
+function checkAndApplyPromo(codeStr) {
+  if (!codeStr) {
+    return { valid: false, message: "Vui lòng nhập mã giảm giá!" };
+  }
+  const result = validatePromoCode(codeStr.trim());
+  
+  if (result.valid) {
+    setActivePromo({
+      code: codeStr.trim().toUpperCase(),
+      discount: result.discount,
+      label: result.label
+    });
+    return { valid: true, message: `Áp dụng thành công: ${result.label}` };
+  } else {
+    setActivePromo(null);
+    return { valid: false, message: result.message || "Mã giảm giá không tồn tại hoặc đã hết hạn!" };
+  }
+}
+
+function getCartDiscountAmount() {
+  const promo = getActivePromo();
+  if (!promo) return 0; 
+  
+  const subtotal = getCartSubtotal(); 
+  return subtotal * (promo.discount / 100); 
+}
+function getCartFinalTotal() {
+  const subtotal = getCartSubtotal();
+  const discountAmount = getCartDiscountAmount();
+  return Math.max(0, subtotal - discountAmount); 
+}
+
+function updateCartSummaryUI() {
+  const subtotal = getCartSubtotal();
+  const discountAmount = getCartDiscountAmount();
+  const finalTotal = getCartFinalTotal();
+  const promo = getActivePromo();
+
+  const subtotalEl = document.getElementById('cart-subtotal');
+  if (subtotalEl) subtotalEl.textContent = formatPrice(subtotal);
+
+  const discountEl = document.getElementById('cart-discount');
+  if (discountEl) {
+    discountEl.textContent = discountAmount > 0 ? `-${formatPrice(discountAmount)}` : formatPrice(0);
+  }
+
+  const finalTotalEl = document.getElementById('cart-final-total');
+  if (finalTotalEl) finalTotalEl.textContent = formatPrice(finalTotal);
+
+  const promoMsgEl = document.getElementById('promo-message');
+  if (promoMsgEl) {
+    if (promo) {
+      promoMsgEl.innerHTML = `<span style="color:var(--green)">✓ Đã áp dụng mã <b>${promo.code}</b> (${promo.label})</span>`;
+    } else {
+      promoMsgEl.innerHTML = '';
+    }
+  }
+}

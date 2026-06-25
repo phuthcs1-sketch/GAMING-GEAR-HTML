@@ -138,6 +138,12 @@
             <span class="label">Tạm tính</span>
             <span id="summary-subtotal">0 đ</span>
           </div>
+
+          <div class="summary-row" id="summary-discount-row" style="display:none; color: #10B981; font-weight: 600;">
+            <span class="label">Giảm giá</span>
+            <span id="summary-discount">0 đ</span>
+          </div>
+
           <div class="summary-row">
             <span class="label">Phí vận chuyển</span>
             <span id="summary-shipping">30.000 đ</span>
@@ -147,6 +153,7 @@
             <input class="promo-input" type="text" id="promo-input" placeholder="Mã giảm giá (NEXUS...)">
             <button class="btn btn-ghost btn-sm" id="promo-btn">Áp dụng</button>
           </div>
+          <div id="promo-msg-details" style="font-size: 0.8rem; margin-top: -8px; margin-bottom: 12px;"></div>
 
           <div class="summary-row summary-total">
             <span class="label">Tổng cộng</span>
@@ -238,14 +245,34 @@
       </div>
     `).join('');
 
+    // ---- LOGIC TÍNH TIỀN TOÀN DIỆN (ĐÃ TÍCH HỢP MÃ GIẢM GIÁ ĐỒNG BỘ CART.JS) ----
     const subtotal = getCartSubtotal();
     const shipping = subtotal >= SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
-    const total = subtotal + shipping;
+    
+    // Gọi hàm tính số % tiền giảm từ file cart.js
+    const discountAmount = getCartDiscountAmount(); 
+    
+    // Tính tổng thanh toán cuối cùng theo công thức chuẩn: Tạm tính + Ship - Giảm giá
+    const total = Math.max(0, subtotal + shipping - discountAmount);
 
+    // In tiền tạm tính và phí vận chuyển lên giao diện
     document.getElementById('summary-subtotal').textContent = formatPrice(subtotal);
     document.getElementById('summary-shipping').textContent = shipping === 0 ? 'MIỄN PHÍ 🎉' : formatPrice(shipping);
+    
+    // Xử lý hiển thị hàng "Giảm giá" động
+    const discountRow = document.getElementById('summary-discount-row');
+    const discountVal = document.getElementById('summary-discount');
+    if (discountAmount > 0) {
+      discountVal.textContent = `-${formatPrice(discountAmount)}`;
+      discountRow.style.display = 'flex';
+    } else {
+      discountRow.style.display = 'none';
+    }
+
+    // Hiển thị tổng số tiền cuối cùng chuẩn xác
     document.getElementById('summary-total').textContent = formatPrice(total);
 
+    // Xử lý thanh tiến trình Free Ship
     const pct = Math.min((subtotal / SHIPPING_THRESHOLD) * 100, 100);
     document.getElementById('shipping-bar-fill').style.width = pct + '%';
     if (subtotal >= SHIPPING_THRESHOLD) {
@@ -253,6 +280,17 @@
     } else {
       const rem = SHIPPING_THRESHOLD - subtotal;
       document.getElementById('shipping-bar-text').textContent = `Mua thêm ${formatPrice(rem)} để được miễn phí vận chuyển`;
+    }
+
+    // Hiển thị nhãn text ghi chú mã đang dùng dưới ô nhập liệu
+    const promo = getActivePromo();
+    const promoMsgDetails = document.getElementById('promo-msg-details');
+    if (promoMsgDetails) {
+      if (promo) {
+        promoMsgDetails.innerHTML = `<span style="color:#10B981">✓ Đang dùng mã <b>${promo.code}</b> (-${promo.discount}%)</span>`;
+      } else {
+        promoMsgDetails.innerHTML = '';
+      }
     }
   }
 
@@ -263,16 +301,19 @@
     if (confirm('Xóa toàn bộ sản phẩm trong giỏ hàng hiện tại?')) { clearCart(); renderCartPage(); }
   });
 
+  // Sự kiện xử lý nút bấm Áp dụng mã giảm giá
   document.getElementById('promo-btn').addEventListener('click', () => {
     const raw = document.getElementById('promo-input').value.trim();
     if (!CONFIG.features.promoCodes) return;
-    const result = validatePromoCode(raw);
-    showToast(
-      result.valid
-        ? `🎉 Đã áp dụng mã chiến binh ${result.label}! (Demo)`
-        : '❌ Mã giảm giá không hợp tồn tại hoặc đã hết hạn.',
-      result.valid ? 'success' : 'error'
-    );
+    
+    // Gọi hàm kiểm tra logic từ file cart.js
+    const result = checkAndApplyPromo(raw);
+    
+    // Hiện thông báo trạng thái
+    showToast(result.message, result.valid ? 'success' : 'error');
+    
+    // Render lại trang để cập nhật số tiền giảm và tổng cộng mới
+    renderCartPage();
   });
 
   document.getElementById('checkout-btn').addEventListener('click', () => {
@@ -285,6 +326,7 @@
     if (e.target === this) this.classList.remove('open');
   });
 
+  // Chạy render giỏ hàng ngay khi vừa mở trang
   renderCartPage();
 </script>
 </body>
